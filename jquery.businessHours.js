@@ -16,7 +16,10 @@
             },
             postInit: function() {
             },
+            postChange: function() {
+            },
             inputDisabled: false,
+            resultContainer: false,
             checkedColorClass: "WorkingDayState",
             uncheckedColorClass: "RestDayState",
             colorBoxValContainerClass: "colorBoxContainer",
@@ -95,6 +98,22 @@
                     }
                 };
             },
+            serialize: function() {
+                var data = [];
+                container.find(".dayContainer").each(function(num, item) {
+                    var isWorkingDay = $(item).find('.operationState').prop("checked");
+
+                    data.push(JSON.stringify({
+                        num: num+1,
+                        isActive: isWorkingDay,
+                        timeFrom: isWorkingDay ? $(item).find("[name='startTime']").val() : null,
+                        timeTill: isWorkingDay ? $(item).find("[name='endTime']").val() : null
+                    }));
+                });
+
+                return data;
+            },
+
             initView: function(options) {
                 var stateClasses = [options.checkedColorClass, options.uncheckedColorClass];
                 var subContainer = container.append($(options.containerTmpl));
@@ -118,6 +137,14 @@
 
                     var endTime = $this.getValueOrDefault(day.timeTill, options.defaultOperationTimeTill);
                     initTimeBox(operationDayNode.find('[name="endTime"]'), endTime, options.inputDisabled);
+
+                    operationDayNode.find('[name="startTime"]').on('change', function() {
+                        $this.exportResult();
+                    });
+                    operationDayNode.find('[name="endTime"]').on('change', function() {
+                        $this.exportResult();
+                    });
+
                 });
 
                 container.find(".operationState").change(function() {
@@ -133,15 +160,28 @@
 
                     checkbox.parents(".colorBox").removeClass(stateClasses.join(' ')).addClass(boxClass);
                     checkbox.parents(".dayContainer").find(".operationTime").toggle(!timeControlDisabled);
+                    $this.exportResult();
                 }).trigger("change");
 
                 if(!options.inputDisabled) {
-                    container.find(".colorBox").on("click", function() {
+                    // container.find(".colorBox").on("click", function() {
+                    //     var checkbox = $(this).find(".operationState");
+                    //     checkbox.prop("checked", !checkbox.prop('checked')).trigger("change");
+                    // });
+                    container.find('[data-toggle="toggle"]').on("click", function() {
                         var checkbox = $(this).find(".operationState");
                         checkbox.prop("checked", !checkbox.prop('checked')).trigger("change");
+                        $this.exportResult();
                     });
                 }
             }
+            ,exportResult: function() {
+                var $this = this;
+                if($this.options.resultContainer !== false) {
+                    $this.options.resultContainer.val($this.serialize());
+                }
+            },
+
         };
 
         return methods.init(opts);
