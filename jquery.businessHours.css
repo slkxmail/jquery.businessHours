@@ -3,21 +3,20 @@
 }
 
 .dayContainer {
-    float: left;
-    line-height: 20px;
-    margin-right: 8px;
-    width: 65px;
-    font-size: 11px;
-    font-weight: bold;
+    float: none;
+    line-height:normal;
+    margin-right:0;
+    width: auto;
+    font-size:inherit;
+    font-weight:normal;
 }
 
 .colorBox {
     cursor: pointer;
-    height: 45px;
-    border: 2px solid #888;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
+    display: inline-block;
+    height: auto;
+    border: none;
+    vertical-align: top;
 }
 
 .colorBox.WorkingDayState {
@@ -28,6 +27,11 @@
 .colorBox.RestDayState {
     border: 2px solid #7a1c44;
     background-color: #de5962;
+}
+.operationTime {
+    width: 80px;
+    margin: 0;
+    float: left;
 }
 
 .operationTime .mini-time {
@@ -51,6 +55,36 @@
     visibility: hidden;
 }
 
-.operationTime {
-    margin-top: 5px;
+.colorBox {
+    display: inline-block;
+    cursor: pointer;
+    height: auto;
+    border: none;
+    vertical-align: top;
 }
+.operationDayTimeContainer {
+    display: inline-block;
+    margin-left: 5px;
+}
+.weekday {
+    display: inline-block;
+    width: 50px;
+}
+
+
+
+.has-primary {
+}
+.has-primary .input-group-addon {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+.has-primary .form-control{
+    border-color: #204d74;
+}
+
+.dayOff {
+    margin-bottom: 3px;
+}
+
